@@ -2,17 +2,43 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Assembly Calculator Suite</title>
 <!-- Pustaka html2canvas untuk ekspor gambar -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
-:root { --navy: #1e3a8a; --emerald: #10b981; --white: #ffffff; --bg: #f8fafc; --text: #0f172a; --gray: #64748b; --border: #e2e8f0; --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05); }
-[data-theme="dark"] { --navy: #60a5fa; --emerald: #34d399; --white: #1e293b; --bg: #0f172a; --text: #f8fafc; --gray: #94a3b8; --border: #334155; --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3); }
+:root { 
+  --navy: #1e3a8a; 
+  --emerald: #10b981; 
+  --white: #ffffff; 
+  --bg: #f8fafc; 
+  --text: #0f172a; 
+  --gray: #64748b; 
+  --border: #e2e8f0; 
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05); 
+}
+[data-theme="dark"] { 
+  --navy: #60a5fa; 
+  --emerald: #34d399; 
+  --white: #1e293b; 
+  --bg: #0f172a; 
+  --text: #f8fafc; 
+  --gray: #94a3b8; 
+  --border: #334155; 
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3); 
+}
 
 *{box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:var(--text);padding-bottom:40px;transition:background 0.3s, color 0.3s}
-.wrap{max-width:1200px;margin:auto;padding:14px}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  padding-bottom:50px;
+  transition:background 0.3s, color 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+.wrap{max-width:1200px;margin:auto;padding:12px 14px}
 
 /* SPLASH SCREEN & ANIMATED MASCOT */
 #welcomeScreen {
@@ -22,7 +48,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
   text-align: center; padding: 20px; transition: opacity 0.5s ease;
 }
 .bot-cartoon {
-  width: 130px; height: 130px; margin-bottom: 20px;
+  width: 120px; height: 120px; margin-bottom: 20px;
   animation: floatBot 2.5s ease-in-out infinite alternate;
 }
 @keyframes floatBot {
@@ -30,8 +56,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
   50% { transform: translateY(-12px) rotate(3deg); }
   100% { transform: translateY(0px) rotate(-3deg); }
 }
-.welcome-title { font-size: 24px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
-.welcome-sub { font-size: 14px; color: var(--gray); margin-bottom: 24px; max-width: 400px; line-height: 1.5; }
+.welcome-title { font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+.welcome-sub { font-size: 13px; color: var(--gray); margin-bottom: 24px; max-width: 440px; line-height: 1.5; }
 .enter-btn {
   background: var(--navy); color: white; border: 0; padding: 12px 28px;
   font-size: 15px; font-weight: 700; border-radius: 12px; cursor: pointer;
@@ -40,91 +66,236 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
 .enter-btn:hover { transform: scale(1.03); }
 .enter-hint { font-size: 11px; color: var(--gray); margin-top: 10px; }
 
+/* HEADER & THEME BUTTON */
+.header-flex{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
+h1{margin:0 0 2px;color:var(--navy);font-size:19px;display:flex;align-items:center;gap:6px}
+.sub{color:var(--gray);font-size:12px}
+
 /* NAV TABS */
-.main-nav { display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 2px solid var(--border); padding-bottom: 8px; }
+.main-nav { 
+  display: flex; 
+  gap: 8px; 
+  margin-bottom: 14px; 
+  border-bottom: 2px solid var(--border); 
+  padding-bottom: 8px; 
+  overflow-x: auto; 
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.main-nav::-webkit-scrollbar { display: none; }
 .nav-tab {
-  padding: 10px 16px; border-radius: 10px; font-weight: 700; font-size: 13px;
-  cursor: pointer; background: transparent; color: var(--gray); border: 1px solid transparent;
-  transition: all 0.2s;
+  padding: 10px 14px; 
+  border-radius: 10px; 
+  font-weight: 700; 
+  font-size: 12px;
+  cursor: pointer; 
+  background: transparent; 
+  color: var(--gray); 
+  border: 1px solid transparent;
+  transition: all 0.2s; 
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .nav-tab.active { background: var(--navy); color: white; border-color: var(--navy); }
 
-/* MAIN LAYOUT & CARDS */
-.header-flex{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-h1{margin:0 0 4px;color:var(--navy);font-size:20px;display:flex;align-items:center;gap:8px}
-.sub{color:var(--gray);font-size:12px}
-.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow);transition:background 0.3s, border 0.3s}
-.card-header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--bg);padding-bottom:10px;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-.card-header h2{margin:0;font-size:15px;color:var(--navy);display:flex;align-items:center;gap:6px}
+/* CARDS & GRIDS */
+.card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:var(--shadow);transition:background 0.3s, border 0.3s}
+.card-header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--bg);padding-bottom:8px;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.card-header h2{margin:0;font-size:14px;color:var(--navy);display:flex;align-items:center;gap:6px}
+
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-label{display:block;font-size:11px;font-weight:700;margin-bottom:4px;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px}
-input{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;background:var(--white);color:var(--text);transition:all 0.2s}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+label{display:block;font-size:11px;font-weight:700;margin-bottom:4px;color:var(--gray);text-transform:uppercase;letter-spacing:0.4px}
+input{
+  width:100%;
+  padding:9px 12px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  font-size:14px;
+  background:var(--white);
+  color:var(--text);
+  transition:all 0.2s;
+}
 input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(30,58,138,0.1)}
-button{padding:9px 14px;border:0;border-radius:10px;background:var(--navy);color:var(--white);font-weight:700;cursor:pointer;transition:all 0.2s;font-size:13px;display:inline-flex;align-items:center;gap:6px}
+button{padding:9px 14px;border:0;border-radius:10px;background:var(--navy);color:var(--white);font-weight:700;cursor:pointer;transition:all 0.2s;font-size:12px;display:inline-flex;align-items:center;gap:6px}
 button:hover{opacity:0.9}
 button.alt{background:var(--border);color:var(--text)}
 button.success{background:var(--emerald);color:white}
 button.warning{background:#f59e0b;color:white}
-button.danger{background:#ef4444;color:white;padding:7px 10px;margin-top:0;font-size:12px}
+button.danger{background:#ef4444;color:white;padding:6px 10px;font-size:11px}
 
-/* PROCESS CARDS */
+/* PROCESS CARDS (MENU 2) */
 .process-list{display:flex;flex-direction:column;gap:10px}
 .process-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px}
 .process-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
-.process-card-top input{font-weight:700;font-size:14px;color:var(--navy)}
+.process-card-top input{font-weight:700;font-size:13px;color:var(--navy)}
 .process-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
 .process-grid-bottom{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding-top:6px;border-top:1px dashed var(--border);font-size:11px;color:var(--gray)}
 .process-grid-bottom div span{font-weight:700;color:var(--text);display:block;font-size:12px;margin-top:2px}
 
-/* SIMULATION CARDS */
-.sim-list{display:flex;flex-direction:column;gap:10px}
-.sim-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px}
-.sim-card-title{font-weight:700;font-size:14px;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.sim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;font-size:12px;color:var(--gray)}
-.sim-grid div{background:var(--white);padding:8px;border-radius:8px;border:1px solid var(--border)}
-.sim-grid div span{font-weight:700;color:var(--text);display:block;font-size:13px;margin-top:2px}
-
 /* EVALUATION METRICS */
-.results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.metric{background:var(--white);border:1px solid var(--border);border-left:4px solid var(--navy);border-radius:12px;padding:12px;box-shadow:var(--shadow)}
+.results{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.metric{background:var(--white);border:1px solid var(--border);border-left:4px solid var(--navy);border-radius:10px;padding:10px 12px;box-shadow:var(--shadow)}
 .lab{font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;font-weight:700}
-.val{font-size:18px;font-weight:800;margin-top:4px;color:var(--text)}
-.status{padding:12px;border-radius:12px;background:var(--bg);font-weight:700;margin-top:12px;font-size:12px;display:flex;align-items:center;gap:8px}
+.val{font-size:16px;font-weight:800;margin-top:3px;color:var(--text);overflow-wrap:break-word}
+.status{padding:10px 12px;border-radius:10px;background:var(--bg);font-weight:700;margin-top:10px;font-size:12px;display:flex;align-items:center;gap:6px;line-height:1.4}
 .status.ok{background:#065f46;color:#ecfdf5;border:1px solid #10b981}
 .status.warn{background:#7f1d1d;color:#fee2e2;border:1px solid #f87171}
 .bottleneck{color:#f87171}
-.note{font-size:11px;color:var(--gray);margin-top:10px}
+.note{font-size:11px;color:var(--gray);margin-top:8px;line-height:1.4}
 
-/* STOPWATCH STYLE */
+/* STOPWATCH */
 .sw-container{text-align:center;padding:2px}
-.sw-display{font-size:36px;font-weight:800;color:var(--navy);font-family:monospace;margin:6px 0;letter-spacing:1px}
-.sw-controls{display:flex;justify-content:center;gap:8px;margin-bottom:12px;align-items:center}
-.stopwatch-hint { font-size: 11px; color: var(--gray); text-align: center; margin: 12px 0; line-height: 1.4; padding: 0 5px; }
-.laps-list{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;margin-top:8px}
-.lap-item{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;display:grid;grid-template-columns:1fr 1fr auto;align-items:center;font-size:11px;gap:8px;text-align:left;}
+.sw-display{font-size:32px;font-weight:800;color:var(--navy);font-family:monospace;margin:6px 0;letter-spacing:1px}
+.sw-controls{display:flex;justify-content:center;gap:8px;margin-bottom:10px;align-items:center}
+.stopwatch-hint { font-size: 11px; color: var(--gray); text-align: center; margin: 10px 0; line-height: 1.4; }
+.laps-list{display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto;margin-top:6px}
+.lap-item{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:6px 10px;display:grid;grid-template-columns:1fr 1fr auto;align-items:center;font-size:11px;gap:6px}
 .lap-item .lap-num { font-weight: 700; color: var(--navy); }
-.lap-item .lap-tot { text-align: center; color: var(--text); }
-.use-lap-btn{background:var(--emerald);color:white;border:0;border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;font-weight:700;white-space:nowrap;justify-self:end;}
+.use-lap-btn{background:var(--emerald);color:white;border:0;border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;font-weight:700;justify-self:end;}
 
-/* AREA CAPTURE OPTIMAL */
-#captureArea { 
-  background: var(--bg); 
-  padding: 16px; 
-  border-radius: 16px; 
+/* SIMULATION CARDS */
+.sim-list{display:flex;flex-direction:column;gap:8px}
+.sim-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px}
+.sim-card-title{font-weight:700;font-size:13px;color:var(--navy);margin-bottom:6px}
+.sim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;font-size:11px;color:var(--gray)}
+.sim-grid div{background:var(--white);padding:6px 8px;border-radius:6px;border:1px solid var(--border)}
+.sim-grid div span{font-weight:700;color:var(--text);display:block;font-size:12px;margin-top:2px}
+
+/* ========================================================
+   COMPACT & EFFICIENT DELIVERY TABLE (NO SCROLLBAR DESKTOP)
+   ======================================================== */
+.deliv-container {
   width: 100%;
-  max-width: 600px; 
+  margin-top: 8px;
+}
+
+.deliv-table { 
+  width: 100%; 
+  border-collapse: separate; 
+  border-spacing: 0; 
+  font-size: 12px; 
+  text-align: left; 
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.deliv-table th { 
+  background: var(--bg); 
+  color: var(--navy); 
+  padding: 10px 12px; 
+  font-weight: 700; 
+  border-bottom: 2px solid var(--border); 
+}
+
+.deliv-table td { 
+  padding: 10px 12px; 
+  border-bottom: 1px solid var(--border); 
+  vertical-align: middle; 
+}
+
+.deliv-table tr:last-child td { border-bottom: none; }
+
+/* Sub-elements inside consolidated cells */
+.cell-group { display: flex; flex-direction: column; gap: 4px; }
+.cell-inline { display: flex; align-items: center; gap: 6px; }
+.cell-label { font-size: 10px; color: var(--gray); font-weight: 700; text-transform: uppercase; }
+
+.badge { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+.badge.ok { background: #d1fae5; color: #065f46; }
+.badge.warn { background: #fee2e2; color: #991b1b; }
+.badge.cutoff { background: #fef3c7; color: #92400e; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-top: 3px; display: inline-block; }
+
+/* AREA CAPTURE */
+#captureArea, #captureAreaDelivery { 
+  background: var(--bg); 
+  padding: 14px; 
+  border-radius: 14px; 
+  width: 100%;
+  max-width: 1100px; 
   margin: 0 auto;
 }
 
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.results{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.grid{grid-template-columns:1fr}.results{grid-template-columns:1fr}.process-grid{grid-template-columns:repeat(2,1fr)}}
+/* ========================================================
+   AUTOMATED MOBILE CARD VIEW (< 720px) - ZERO SIDE SCROLL
+   ======================================================== */
+@media(max-width: 992px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .results { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media(max-width: 720px) {
+  .wrap { padding: 8px; }
+  h1 { font-size: 17px; }
+  .card { padding: 12px; border-radius: 12px; }
+  .grid { grid-template-columns: 1fr; gap: 8px; }
+  .grid-4 { grid-template-columns: 1fr; gap: 8px; }
+  .results { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .val { font-size: 14px; }
+  .metric { padding: 8px 10px; }
+
+  /* Transform table into mobile cards */
+  .deliv-table, 
+  .deliv-table tbody, 
+  .deliv-table tr, 
+  .deliv-table td {
+    display: block;
+    width: 100% !important;
+  }
+
+  .deliv-table thead { display: none; }
+
+  .deliv-table {
+    border: none;
+    background: transparent;
+    overflow: visible;
+  }
+
+  .deliv-table tr {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+
+  .deliv-table td {
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .deliv-table td:last-child {
+    border-bottom: none;
+    padding-top: 8px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .deliv-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .deliv-table td:first-child::before,
+  .deliv-table td:last-child::before {
+    display: none;
+  }
+}
 </style>
 </head>
 <body data-theme="light">
 
 <!-- WELCOME / SPLASH SCREEN -->
 <div id="welcomeScreen">
-  <!-- ANIMATED CARTOON MASCOT SVG -->
   <svg class="bot-cartoon" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="50" y="60" width="100" height="80" rx="20" fill="#1e3a8a"/>
     <rect x="65" y="75" width="70" height="40" rx="10" fill="#60a5fa"/>
@@ -140,25 +311,26 @@ button.danger{background:#ef4444;color:white;padding:7px 10px;margin-top:0;font-
     <rect x="70" y="140" width="20" height="35" rx="10" fill="#64748b"/>
     <rect x="110" y="140" width="20" height="35" rx="10" fill="#64748b"/>
   </svg>
-  <div class="welcome-title">Selamat Datang di Assembly Calculator</div>
-  <div class="welcome-sub">Sistem Pengolah Studi Waktu, Penyesuaian Target Durasi SPA, dan Alokasi Manpower Assembly</div>
-  <button class="enter-btn" onclick="enterApp()">Lanjutkan ke Menu ➔</button>
-  <div class="enter-hint">Atau tekan tombol <b>ENTER</b> di keyboard Anda</div>
+  <div class="welcome-title">Assembly Calculator</div>
+  <div class="welcome-sub">Sistem Pengolah Studi Waktu, Durasi Pergantian SPA, Manpower, dan Simulasi Pengiriman Assembly</div>
+  <button class="enter-btn" onclick="enterApp()">Mulai Aplikasi ➔</button>
+  <div class="enter-hint">Atau tekan tombol <b>ENTER</b> di keyboard</div>
 </div>
 
 <div class="wrap">
 <div class="header-flex">
   <div>
     <h1>🏭 Assembly Calculator Suite</h1>
-    <div class="sub">Multi-process assembly line • SPA & Time Study Management</div>
+    <div class="sub">Multi-process line • SPA, Time Study & Delivery Simulation</div>
   </div>
-  <button class="alt" onclick="toggleTheme()" id="themeBtn" style="padding:8px 12px;">🌙 Dark Mode</button>
+  <button class="alt" onclick="toggleTheme()" id="themeBtn" style="padding:7px 11px;">🌙 Mode</button>
 </div>
 
 <!-- NAVIGATION MENU TABS -->
 <div class="main-nav">
-  <button class="nav-tab active" id="tab1Btn" onclick="switchTab(1)">1. Pergantian SPA & Pemakaian Operator</button>
-  <button class="nav-tab" id="tab2Btn" onclick="switchTab(2)">2. Assembly Time Study & Capacity</button>
+  <button class="nav-tab active" id="tab1Btn" onclick="switchTab(1)">1. Pergantian SPA & Operator</button>
+  <button class="nav-tab" id="tab2Btn" onclick="switchTab(2)">2. Time Study & Capacity</button>
+  <button class="nav-tab" id="tab3Btn" onclick="switchTab(3)">3. Simulasi Jadwal Pengiriman</button>
 </div>
 
 <!-- ================= MENU 1: PERGANTIAN SPA & PEMAKAIAN OPERATOR ================= -->
@@ -167,15 +339,15 @@ button.danger{background:#ef4444;color:white;padding:7px 10px;margin-top:0;font-
     <div class="card-header">
       <h2>🔄 Penyesuaian Target Durasi & Operator (Pergantian SPA / WIP)</h2>
     </div>
-    <div class="grid" style="margin-bottom:12px;">
+    <div class="grid" style="margin-bottom:10px;">
       <div class="field"><label>Nama Produk / SPA</label><input id="spaProduct" placeholder="Misal: Model A8602"></div>
-      <div class="field"><label>Target Standard 8 Jam (pcs)</label><input id="spaStdTarget" type="number" placeholder="Misal: 2000" oninput="calcSPA()"></div>
+      <div class="field"><label>Target Standard 8 Jam (pcs)</label><input id="spaStdTarget" type="number" placeholder="0" oninput="calcSPA()"></div>
       <div class="field"><label>Jam Kerja Standard (Jam)</label><input id="spaStdHours" type="number" value="8" step="0.1" oninput="calcSPA()"></div>
     </div>
-    <div class="grid" style="margin-bottom:12px;">
-      <div class="field"><label>Jam Kerja Aktual / Durasi Run (Jam)</label><input id="spaActHours" type="number" placeholder="Misal: 4 atau 2" step="0.1" oninput="calcSPA()"></div>
-      <div class="field"><label>Operator Standard (Orang)</label><input id="spaStdOps" type="number" placeholder="Misal: 10" oninput="calcSPA()"></div>
-      <div class="field"><label>Operator Aktual (Orang)</label><input id="spaActOps" type="number" placeholder="Misal: 8" oninput="calcSPA()"></div>
+    <div class="grid">
+      <div class="field"><label>Jam Kerja Aktual / Durasi Run (Jam)</label><input id="spaActHours" type="number" placeholder="0" step="0.1" oninput="calcSPA()"></div>
+      <div class="field"><label>Operator Standard (Orang)</label><input id="spaStdOps" type="number" placeholder="0" oninput="calcSPA()"></div>
+      <div class="field"><label>Operator Aktual (Orang)</label><input id="spaActOps" type="number" placeholder="0" oninput="calcSPA()"></div>
     </div>
   </div>
 
@@ -186,14 +358,14 @@ button.danger{background:#ef4444;color:white;padding:7px 10px;margin-top:0;font-
     <div class="results">
       <div class="metric"><div class="lab">Target Durasi Aktual</div><div class="val" id="spaResTimeTarget">-</div></div>
       <div class="metric"><div class="lab">Target Penyesuaian OP</div><div class="val" id="spaResOpTarget">-</div></div>
-      <div class="metric"><div class="lab">Target Final disesuaikan</div><div class="val" id="spaResFinalTarget" style="color:var(--navy);">-</div></div>
+      <div class="metric"><div class="lab">Target Final Disesuaikan</div><div class="val" id="spaResFinalTarget" style="color:var(--navy);">-</div></div>
       <div class="metric"><div class="lab">Rata-rata Output / Jam</div><div class="val" id="spaResPerHour">-</div></div>
     </div>
-    <div class="status ok" id="spaStatus" style="margin-top:14px;">ℹ️ Masukkan parameter SPA dan Jam Kerja Aktual untuk melihat target penyesuaian.</div>
+    <div class="status ok" id="spaStatus">ℹ️ Masukkan parameter SPA dan Jam Kerja Aktual untuk melihat penyesuaian.</div>
   </div>
 </div>
 
-<!-- ================= MENU 2: ASSEMBLY TIME STUDY & CAPACITY (PROJECT SUDAH JADI) ================= -->
+<!-- ================= MENU 2: ASSEMBLY TIME STUDY & CAPACITY ================= -->
 <div id="menuView2" style="display:none;">
 
 <!-- STOPWATCH CARD -->
@@ -206,11 +378,11 @@ button.danger{background:#ef4444;color:white;padding:7px 10px;margin-top:0;font-
   <div class="sw-controls">
     <button id="startStopBtn" class="success" onclick="swStartStop()">▶ Start</button>
     <button id="lapBtn" class="warning" onclick="swLap()" disabled>🚩 Lap</button>
-    <button class="alt" onclick="swReset()" title="Reset" style="padding:9px 12px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+    <button class="alt" onclick="swReset()" title="Reset" style="padding:9px 12px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
   </div>
-  <div class="stopwatch-hint">Tombol warna hijau "Gunakan" untuk memasukkan waktu kumulatif & qty ke kolom batch sesuai urutan proses.</div>
+  <div class="stopwatch-hint">Tekan "Gunakan" untuk memasukkan waktu kumulatif & qty ke kolom batch alokasi proses.</div>
   <div class="laps-list" id="lapsContainer">
-    <div style="text-align:center;color:var(--gray);font-size:12px;padding:10px;">Belum ada catatan waktu.</div>
+    <div style="text-align:center;color:var(--gray);font-size:12px;padding:8px;">Belum ada catatan waktu lap.</div>
   </div>
 </div>
 </div>
@@ -225,13 +397,13 @@ button.danger{background:#ef4444;color:white;padding:7px 10px;margin-top:0;font-
   <button onclick="clearTarget()" class="danger">🗑️ Reset</button>
 </div>
 <div class="grid" style="margin-bottom:10px;">
-<div class="field"><label>Produk</label><input id="product" value=""></div>
-<div class="field"><label>Target Bersih (pcs)</label><input id="target" type="number" value="" min="0"></div>
-<div class="field"><label>Reject (%)</label><input id="rejectRate" type="number" value="5" min="0" max="100" step=".1"></div>
+  <div class="field"><label>Produk</label><input id="product" placeholder="Nama Produk..."></div>
+  <div class="field"><label>Target Bersih (pcs)</label><input id="target" type="number" placeholder="0" min="0"></div>
+  <div class="field"><label>Reject (%)</label><input id="rejectRate" type="number" value="3" min="0" max="100" step=".1"></div>
 </div>
 <div class="grid" style="grid-template-columns:repeat(2,1fr);">
-<div class="field"><label>Jam Kerja</label><input id="hours" type="number" value="" min="0.1" step=".1"></div>
-<div class="field"><label>Efisiensi (%)</label><input id="eff" type="number" value="" min="1" max="100"></div>
+  <div class="field"><label>Jam Kerja</label><input id="hours" type="number" value="7.5" min="0.1" step=".1"></div>
+  <div class="field"><label>Efisiensi (%)</label><input id="eff" type="number" value="90" min="1" max="100"></div>
 </div>
 </div>
 
@@ -243,7 +415,7 @@ button.danger{background:#ef4444;color:white;padding:7px 10px;margin-top:0;font-
 </div>
 <div class="process-list" id="processList"></div>
 <button onclick="addItem()" style="margin-top:10px;width:100%;justify-content:center;">➕ Tambah Proses</button>
-<div class="note">💡 Masukkan CT Batch & Qty/Batch untuk kalkulasi otomatis.</div>
+<div class="note">💡 Masukkan CT Batch & Qty/Batch untuk kalkulasi otomatis kapasitas lini.</div>
 </div>
 
 <!-- EVALUATION CARD -->
@@ -252,12 +424,12 @@ button.danger{background:#ef4444;color:white;padding:7px 10px;margin-top:0;font-
   <h2>📊 Evaluasi Kapasitas</h2>
 </div>
 <div class="results">
-<div class="metric"><div class="lab">Total OP</div><div class="val" id="totalOps">-</div></div>
-<div class="metric"><div class="lab">Kapasitas Line</div><div class="val" id="lineCap">-</div></div>
-<div class="metric"><div class="lab">Target Total (+Reject)</div><div class="val" id="targetTotal">-</div></div>
-<div class="metric"><div class="lab">Gap Target</div><div class="val" id="gap">-</div></div>
+  <div class="metric"><div class="lab">Total OP</div><div class="val" id="totalOps">-</div></div>
+  <div class="metric"><div class="lab">Kapasitas Line</div><div class="val" id="lineCap">-</div></div>
+  <div class="metric"><div class="lab">Target (+Reject)</div><div class="val" id="targetTotal">-</div></div>
+  <div class="metric"><div class="lab">Gap Target</div><div class="val" id="gap">-</div></div>
 </div>
-<div class="metric" style="border-left-color:#b91c1c;margin-top:10px;"><div class="lab">Bottleneck</div><div class="val bottleneck" id="bottle">-</div></div>
+<div class="metric" style="border-left-color:#b91c1c;margin-top:8px;"><div class="lab">Bottleneck</div><div class="val bottleneck" id="bottle">-</div></div>
 <div class="status" id="status">ℹ️ Masukkan parameter target dan data proses.</div>
 </div>
 
@@ -267,22 +439,156 @@ button.danger{background:#ef4444;color:white;padding:7px 10px;margin-top:0;font-
   <h2>🔍 Simulasi Manpower</h2>
 </div>
 <div class="sim-list" id="simList">
-  <div style="text-align:center;color:var(--gray);font-size:12px;padding:10px;">Belum ada data proses.</div>
+  <div style="text-align:center;color:var(--gray);font-size:12px;padding:8px;">Belum ada data proses.</div>
 </div>
 </div>
 
 </div> <!-- END CAPTURE AREA -->
 
 <!-- EXPORT IMAGE CARD -->
-<div class="card" style="background:#eff6ff;border-color:#bfdbfe;margin-top:14px;">
+<div class="card" style="background:#eff6ff;border-color:#bfdbfe;margin-top:12px;">
 <div class="card-header" style="border-bottom-color:#bfdbfe;">
   <h2 style="color:#1e40af;">📸 Bagikan Laporan sebagai Gambar</h2>
 </div>
-<button class="success" onclick="downloadImage()" style="width:100%;justify-content:center;padding:12px;font-size:15px;background:#2563eb;">📥 Simpan Hasil ke Gambar (HD)</button>
-<div class="note" style="color:#1e40af;margin-top:8px;">ℹ️ Ukuran gambar dioptimalkan agar pas dan proporsional saat dibuka di galeri HP maupun WhatsApp.</div>
+<button class="success" onclick="downloadImage()" style="width:100%;justify-content:center;padding:12px;font-size:14px;background:#2563eb;">📥 Simpan Hasil ke Gambar (HD)</button>
+<div class="note" style="color:#1e40af;">ℹ️ Gambar dioptimalkan agar pas dan jernih saat dibagikan ke HP maupun WhatsApp.</div>
 </div>
 
 </div> <!-- END MENU VIEW 2 -->
+
+<!-- ================= MENU 3: SIMULASI JADWAL PENGIRIMAN ================= -->
+<div id="menuView3" style="display:none;">
+
+  <!-- PARAMETER DASAR KAPASITAS LINI UNTUK PENGIRIMAN -->
+  <div class="card">
+    <div class="card-header">
+      <h2>⚙️️ Parameter Lini Produksi untuk Pengiriman</h2>
+      <button class="success" onclick="syncFromTab2()" style="font-size:11px;padding:5px 9px;">⚡ Ambil Data dari Tab 2</button>
+    </div>
+    <div class="grid" style="margin-bottom:10px;">
+      <div class="field">
+        <label>Nama Produk</label>
+        <input id="delivProduct" placeholder="Misal: 8603" oninput="calcDelivery()">
+      </div>
+      <div class="field">
+        <label>No. PO / Job Order Ref</label>
+        <input id="delivJobOrder" placeholder="Misal: PO# 4200001836" oninput="calcDelivery()">
+      </div>
+      <div class="field">
+        <label>Target 7,5 Jam (pcs)</label>
+        <input id="delivTarget75" type="number" placeholder="0" oninput="calcDelivery()">
+      </div>
+    </div>
+    <div class="grid-4" style="margin-bottom:10px;">
+      <div class="field">
+        <label>Jam Bersih / Shift</label>
+        <input id="delivShiftHours" type="number" value="7.5" step="0.1" oninput="calcDelivery()">
+      </div>
+      <div class="field">
+        <label>Shift / Hari</label>
+        <input id="delivShiftCount" type="number" value="1" min="1" max="3" oninput="calcDelivery()">
+      </div>
+      <div class="field">
+        <label>Jumlah Line Aktif</label>
+        <input id="delivLineCount" type="number" value="1" min="1" max="20" oninput="calcDelivery()">
+      </div>
+      <div class="field">
+        <label>Efisiensi Lini (%)</label>
+        <input id="delivEff" type="number" value="90" min="1" max="100" oninput="calcDelivery()">
+      </div>
+    </div>
+    <div class="grid-4">
+      <div class="field">
+        <label>Tanggal Hari Ini (Start)</label>
+        <input type="date" id="delivTodayDate" onchange="updateTodayDateDisplay()">
+        <div id="todayDateText" style="font-size:11px;font-weight:700;color:var(--navy);margin-top:3px;">-</div>
+      </div>
+      <div class="field">
+        <label>Stok Awal Gudang / Buffer (pcs)</label>
+        <input id="delivInitialStock" type="number" value="0" min="0" oninput="calcDelivery()">
+      </div>
+      <div class="field">
+        <label>Order Induk Total (pcs)</label>
+        <input id="delivTotalOrder" type="number" placeholder="0" style="font-weight:700;">
+      </div>
+      <div class="field">
+        <label>Kapasitas Harian Terpasang</label>
+        <input id="delivDailyCapacity" value="-" readonly style="background:var(--bg);font-weight:800;color:var(--navy);">
+      </div>
+    </div>
+  </div>
+
+  <!-- AREA CAPTURE JADWAL PENGIRIMAN -->
+  <div id="captureAreaDelivery">
+
+    <!-- TABEL SIMULASI PENGIRIMAN EFISIEN -->
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-header">
+        <h2>🚚 Jadwal & Simulasi Pengiriman (Weekly Delivery)</h2>
+        <div style="display:flex;gap:6px;">
+          <button onclick="addDeliveryWeek()" style="padding:6px 10px;font-size:11px;">➕ Tambah Batch</button>
+          <button class="danger" onclick="resetDeliverySchedule()" style="padding:6px 10px;font-size:11px;">🗑️ Kosongkan</button>
+        </div>
+      </div>
+      
+      <div class="deliv-container">
+        <table class="deliv-table">
+          <thead>
+            <tr>
+              <th style="width: 25%;">Batch & Jadwal Cut-Off</th>
+              <th style="width: 17%;">Target Kirim</th>
+              <th style="width: 18%;">Waktu Kerja</th>
+              <th style="width: 20%;">Output Produksi</th>
+              <th style="width: 15%;">Stok & Status</th>
+              <th style="width: 5%; text-align: center;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="deliveryTableBody">
+            <!-- Di-generate stabil oleh buildDeliveryTable() -->
+          </tbody>
+        </table>
+      </div>
+      <div class="note">💡 <b>Hari Kerja</b> otomatis dihitung Senin–Kamis (Cut-off H-1 sebelum delivery). Hari Jumat penarikan tidak memotong jam produksi batch berjalan. Seluruh angka tetap dapat disesuaikan manual[cite: 11].</div>
+    </div>
+
+    <!-- EVALUASI RINGKASAN JADWAL -->
+    <div class="card" style="margin-bottom:0;">
+      <div class="card-header">
+        <h2>📊 Ringkasan Akumulasi Jadwal Pengiriman</h2>
+      </div>
+      <div class="results">
+        <div class="metric">
+          <div class="lab">Total Target Delivery</div>
+          <div class="val" id="sumDelivTarget">-</div>
+        </div>
+        <div class="metric">
+          <div class="lab">Total Output Produksi</div>
+          <div class="val" id="sumDelivOutput">-</div>
+        </div>
+        <div class="metric">
+          <div class="lab">Buffer Stok Akhir</div>
+          <div class="val" id="sumDelivStock">-</div>
+        </div>
+        <div class="metric">
+          <div class="lab">Total Jam OT Direncanakan</div>
+          <div class="val" id="sumDelivOT">-</div>
+        </div>
+      </div>
+      <div class="status" id="delivStatus">ℹ️ Masukkan target delivery untuk melihat simulasi.</div>
+    </div>
+
+  </div> <!-- END CAPTURE AREA DELIVERY -->
+
+  <!-- EXPORT IMAGE DELIVERY -->
+  <div class="card" style="background:#eff6ff;border-color:#bfdbfe;margin-top:12px;">
+    <div class="card-header" style="border-bottom-color:#bfdbfe;">
+      <h2 style="color:#1e40af;">📸 Bagikan Jadwal Pengiriman sebagai Gambar</h2>
+    </div>
+    <button class="success" onclick="downloadDeliveryImage()" style="width:100%;justify-content:center;padding:12px;font-size:14px;background:#2563eb;">📥 Simpan Jadwal Pengiriman ke Gambar (HD)</button>
+    <div class="note" style="color:#1e40af;">ℹ️ Gambar berisi tabel jadwal mingguan yang ringkas dan status buffer stock untuk koordinasi tim.</div>
+  </div>
+
+</div> <!-- END MENU VIEW 3 -->
 
 </div>
 
@@ -307,20 +613,113 @@ document.addEventListener('keydown', function(event) {
 function switchTab(tabIndex) {
   const v1 = document.getElementById('menuView1');
   const v2 = document.getElementById('menuView2');
+  const v3 = document.getElementById('menuView3');
   const b1 = document.getElementById('tab1Btn');
   const b2 = document.getElementById('tab2Btn');
+  const b3 = document.getElementById('tab3Btn');
 
-  if(tabIndex === 1) {
-    v1.style.display = 'block';
-    v2.style.display = 'none';
-    b1.className = 'nav-tab active';
-    b2.className = 'nav-tab';
-  } else {
-    v1.style.display = 'none';
-    v2.style.display = 'block';
-    b1.className = 'nav-tab';
-    b2.className = 'nav-tab active';
+  v1.style.display = (tabIndex === 1) ? 'block' : 'none';
+  v2.style.display = (tabIndex === 2) ? 'block' : 'none';
+  v3.style.display = (tabIndex === 3) ? 'block' : 'none';
+
+  b1.className = (tabIndex === 1) ? 'nav-tab active' : 'nav-tab';
+  b2.className = (tabIndex === 2) ? 'nav-tab active' : 'nav-tab';
+  b3.className = (tabIndex === 3) ? 'nav-tab active' : 'nav-tab';
+}
+
+// --- COMMON HELPERS ---
+const $=id=>document.getElementById(id);
+const num=v=>parseFloat(v)||0;
+const fmt=x=>new Intl.NumberFormat('id-ID',{maximumFractionDigits:0}).format(Math.round(x));
+const fmt2=x=>new Intl.NumberFormat('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2}).format(x);
+
+function formatIndoDate(dateStr) {
+  if (!dateStr) return "-";
+  const parts = dateStr.split('-');
+  if (parts.length !== 3) return "-";
+  const y = parseInt(parts[0], 10);
+  const m = parseInt(parts[1], 10);
+  const d = parseInt(parts[2], 10);
+  const dateObj = new Date(y, m - 1, d);
+  if (isNaN(dateObj.getTime())) return "-";
+
+  const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  const dayName = days[dateObj.getDay()];
+  const dd = d < 10 ? '0' + d : d;
+  const mm = m < 10 ? '0' + m : m;
+
+  return `📅 ${dayName}, ${dd}-${mm}-${y}`;
+}
+
+// FUNGSI HITUNG HARI KERJA DENGAN CUT-OFF H-1 (SENIN - JUMAT)
+function countWorkDaysWithCutoff(startDateStr, deliveryDateStr) {
+  if (!startDateStr || !deliveryDateStr) return 0;
+  const startParts = startDateStr.split('-');
+  const delivParts = deliveryDateStr.split('-');
+
+  const start = new Date(parseInt(startParts[0], 10), parseInt(startParts[1], 10) - 1, parseInt(startParts[2], 10));
+  const deliv = new Date(parseInt(delivParts[0], 10), parseInt(delivParts[1], 10) - 1, parseInt(delivParts[2], 10));
+
+  const cutOff = new Date(deliv);
+  cutOff.setDate(cutOff.getDate() - 1);
+
+  if (start > cutOff) return 0;
+
+  let cur = new Date(start);
+  let workDays = 0;
+  while (cur <= cutOff) {
+    const day = cur.getDay(); // 0 = Minggu, 6 = Sabtu
+    if (day !== 0 && day !== 6) {
+      workDays++;
+    }
+    cur.setDate(cur.getDate() + 1);
   }
+  return workDays;
+}
+
+function getCutoffInfo(deliveryDateStr) {
+  if (!deliveryDateStr) return "";
+  const parts = deliveryDateStr.split('-');
+  const deliv = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+  deliv.setDate(deliv.getDate() - 1);
+
+  const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  const dayName = days[deliv.getDay()];
+  const dd = String(deliv.getDate()).padStart(2, '0');
+  const mm = String(deliv.getMonth() + 1).padStart(2, '0');
+  return `Cut-off: ${dayName}, ${dd}-${mm}-${deliv.getFullYear()}`;
+}
+
+function updateTodayDateDisplay() {
+  const val = $('delivTodayDate').value;
+  $('todayDateText').textContent = formatIndoDate(val);
+  recalculateAllWorkDays();
+  calcDelivery();
+}
+
+function recalculateAllWorkDays() {
+  const todayStr = $('delivTodayDate').value;
+  let prevDeliveryDateStr = todayStr;
+
+  deliveryWeeks.forEach((item, index) => {
+    if (item.date) {
+      const startDateForBatch = (index === 0) ? todayStr : prevDeliveryDateStr;
+      const autoDays = countWorkDaysWithCutoff(startDateForBatch, item.date);
+      item.days = autoDays;
+      
+      const daysInput = $(`deliv-days-${index}`);
+      if (daysInput) daysInput.value = autoDays;
+
+      prevDeliveryDateStr = item.date;
+    }
+    updateDateDisplay(index);
+  });
+}
+
+function onRowDateChange(index, newDate) {
+  deliveryWeeks[index].date = newDate;
+  recalculateAllWorkDays();
+  calcDelivery();
 }
 
 // --- MENU 1: KALKULASI SPA & OPERATOR ---
@@ -332,10 +731,7 @@ function calcSPA() {
   const actOps = num($('spaActOps').value);
 
   if (stdTarget > 0 && actHours > 0) {
-    // 1. Disesuaikan berdasarkan proporsi jam kerja aktual
     const targetBasedOnTime = (stdTarget / stdHours) * actHours;
-    
-    // 2. Disesuaikan berdasarkan rasio operator (jika diisi)
     let finalTarget = targetBasedOnTime;
     let targetBasedOnOp = targetBasedOnTime;
     
@@ -346,18 +742,14 @@ function calcSPA() {
 
     const perHourOutput = finalTarget / actHours;
 
-    $('spaResTimeTarget').textContent = fmt(targetBasedOnTime) + ' pcs';
-    $('spaResOpTarget').textContent = (stdOps > 0 && actOps > 0) ? fmt(targetBasedOnOp) + ' pcs' : '-';
-    $('spaResFinalTarget').textContent = fmt(finalTarget) + ' pcs';
-    $('spaResPerHour').textContent = fmt(perHourOutput) + ' pcs/jam';
+    $('spaResTimeTarget').textContent = fmt(targetBasedOnTime) + ' pcs';$('spaResOpTarget').textContent = (stdOps > 0 && actOps > 0) ? fmt(targetBasedOnOp) + ' pcs' : '-';
+    $('spaResFinalTarget').textContent = fmt(finalTarget) + ' pcs';$('spaResPerHour').textContent = fmt(perHourOutput) + ' pcs/jam';
 
     $('spaStatus').textContent = `✅ Target disesuaikan menjadi ${fmt(finalTarget)} pcs untuk durasi ${actHours} jam dengan ${actOps || stdOps || '-'} operator.`;
   } else {
     $('spaResTimeTarget').textContent = '-';
-    $('spaResOpTarget').textContent = '-';
-    $('spaResFinalTarget').textContent = '-';
-    $('spaResPerHour').textContent = '-';
-    $('spaStatus').textContent = 'ℹ️ Masukkan parameter SPA dan Jam Kerja Aktual untuk melihat target penyesuaian.';
+    $('spaResOpTarget').textContent = '-';$('spaResFinalTarget').textContent = '-';
+    $('spaResPerHour').textContent = '-';$('spaStatus').textContent = 'ℹ️ Masukkan parameter SPA dan Jam Kerja Aktual untuk melihat penyesuaian.';
   }
 }
 
@@ -367,10 +759,10 @@ function toggleTheme(){
   const btn = document.getElementById('themeBtn');
   if(body.getAttribute('data-theme') === 'dark'){
     body.setAttribute('data-theme', 'light');
-    btn.textContent = '🌙 Dark Mode';
+    btn.textContent = '🌙 Mode';
   } else {
     body.setAttribute('data-theme', 'dark');
-    btn.textContent = '☀️ Light Mode';
+    btn.textContent = '☀️ Mode';
   }
 }
 
@@ -419,7 +811,6 @@ function swLap() {
   let prevTotal = lapList.length > 0 ? lapList[lapList.length - 1].total : 0;
   let diff = currentLapTime - prevTotal;
   lapList.push({ lapTime: diff, total: currentLapTime });
-  
   renderLaps();
 }
 
@@ -427,7 +818,7 @@ function renderLaps(){
   let container = document.getElementById("lapsContainer");
   container.innerHTML = "";
   if(lapList.length === 0){
-    container.innerHTML = `<div style="text-align:center;color:var(--gray);font-size:12px;padding:10px;">Belum ada catatan waktu.</div>`;
+    container.innerHTML = `<div style="text-align:center;color:var(--gray);font-size:12px;padding:8px;">Belum ada catatan waktu lap.</div>`;
     return;
   }
   lapList.forEach((item, index) => {
@@ -440,8 +831,8 @@ function renderLaps(){
     div.className = "lap-item";
     div.innerHTML = `
       <span class="lap-num">Lap ${lapNum}: ${lapSec}s</span>
-      <span class="lap-tot">Total: ${totalFormatted}</span>
-      <button class="use-lap-btn" onclick="applyDataToProcess(${totalSecondsValue}, ${lapNum})" title="Masukkan Total dan Qty ke CT & Qty Batch">Gunakan</button>
+      <span class="lap-tot" style="color:var(--text);font-size:11px;">Tot: ${totalFormatted}</span>
+      <button class="use-lap-btn" onclick="applyDataToProcess(${totalSecondsValue}, ${lapNum})" title="Gunakan waktu ini">Gunakan</button>
     `;
     container.appendChild(div);
   });
@@ -470,18 +861,13 @@ function applyDataToProcess(totalSeconds, lapNumber){
   data[targetIndex].ct = totalSeconds;
   data[targetIndex].qty = lapNumber;
   render();
-  alert(`✅ Waktu Total ${totalSeconds} detik & Qty ${lapNumber} berhasil dimasukkan ke Proses #${targetIndex + 1}!`);
+  alert(`✅ Waktu Total ${totalSeconds} detik & Qty ${lapNumber} berhasil dimasukkan ke Baris #${targetIndex + 1}!`);
 }
 
-// --- CALCULATOR SCRIPT ---
-let data=[
- {process:"",ct:0,qty:1,ops:0}
+// --- CALCULATOR SCRIPT (MENU 2) ---
+let data = [
+  {process:"", ct:0, qty:1, ops:0}
 ];
-
-const $=id=>document.getElementById(id);
-const num=v=>parseFloat(v)||0;
-const fmt=x=>new Intl.NumberFormat('id-ID',{maximumFractionDigits:0}).format(Math.round(x));
-const fmt2=x=>new Intl.NumberFormat('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2}).format(x);
 
 function render(){
  let container=$('processList'); container.innerHTML='';
@@ -492,15 +878,15 @@ function render(){
     <div class="process-card-top">
       <span style="font-weight:700;font-size:12px;color:var(--gray)">#${i+1}</span>
       <input type="text" placeholder="Nama Proses..." value="${d.process}" oninput="data[${i}].process=this.value;calc()">
-      <button class="danger" onclick="removeItem(${i})">✕ Hapus</button>
+      <button class="danger" onclick="removeItem(${i})">✕</button>
     </div>
     <div class="process-grid">
       <div>
-        <label>CT Batch (detik)</label>
+        <label>CT Batch (s)</label>
         <input type="number" id="ct_input_${i}" min="0" step=".01" placeholder="0" value="${d.ct || ''}" oninput="data[${i}].ct=num(this.value);calc()">
       </div>
       <div>
-        <label>Qty / Batch</label>
+        <label>Qty/Batch</label>
         <input type="number" id="qty_input_${i}" min="1" placeholder="1" value="${d.qty || ''}" oninput="data[${i}].qty=num(this.value);calc()">
       </div>
       <div>
@@ -534,16 +920,14 @@ function removeItem(i){
 function clearTarget(){
  if(confirm("Kosongkan data Target Operasional?")){
   $('product').value = '';
-  $('target').value = '';
-  $('rejectRate').value = '5';
-  $('hours').value = '';
-  $('eff').value = '';
+  $('target').value = '';$('rejectRate').value = '3';
+  $('hours').value = '7.5';$('eff').value = '90';
   calc();
  }
 }
 
 function clearAllData(){
- if(confirm("Kosongkan seluruh data tabel proses?")){
+ if(confirm("Kosongkan seluruh data alokasi proses?")){
   data = [{process:"",ct:0,qty:1,ops:0}];
   render();
  }
@@ -555,8 +939,8 @@ function downloadImage(){
  html2canvas(captureElement, { 
    scale: 2, 
    useCORS: true,
-   width: 600,
-   windowWidth: 600
+   scrollX: 0,
+   scrollY: 0
  }).then(canvas => {
    const link = document.createElement('a');
    link.download = `TimeStudy_${($('product').value || 'Produk').replace(/\s+/g, '_')}.png`;
@@ -582,9 +966,9 @@ function calc(){
   const team=effective*d.ops;
   caps.push(team);
   
-  if($('ctpc'+i)) $('ctpc'+i).textContent=d.ct > 0 ? fmt2(ctpcs)+'s' : '-';
-  if($('opcap'+i)) $('opcap'+i).textContent=effective > 0 ? fmt(effective) : '-';
-  if($('teamcap'+i)) $('teamcap'+i).textContent=team > 0 ? fmt(team) : '-';
+  if($('ctpc'+i))$('ctpc'+i).textContent=d.ct > 0 ? fmt2(ctpcs)+'s' : '-';
+  if($('opcap'+i))$('opcap'+i).textContent=effective > 0 ? fmt(effective) : '-';
+  if($('teamcap'+i))$('teamcap'+i).textContent=team > 0 ? fmt(team) : '-';
  });
  
  const validCaps = caps.filter(c => c > 0);
@@ -595,14 +979,13 @@ function calc(){
  $('totalOps').textContent=totalOps > 0 ? fmt(totalOps)+' OP' : '-';
  $('lineCap').textContent=lineCap > 0 ? fmt(lineCap)+' pcs' : '-';
  $('targetTotal').textContent=targetTotal > 0 ? fmt(targetTotal)+' pcs' : '-';
- $('gap').textContent=baseTarget > 0 ? (gap>=0?'+':'' )+fmt(gap) : '-';
- $('bottle').textContent=(bottleneckIndex !== -1 && data[bottleneckIndex]?.process) ? data[bottleneckIndex].process : '-';
+ $('gap').textContent=baseTarget > 0 ? (gap>=0?'+':'' )+fmt(gap) : '-';$('bottle').textContent=(bottleneckIndex !== -1 && data[bottleneckIndex]?.process) ? data[bottleneckIndex].process : '-';
  
  const statusEl = $('status');
  if(baseTarget > 0 && hours > 0){
    if(lineCap>=targetTotal){
     statusEl.className = 'status ok';
-    statusEl.innerHTML = '✅ Kapasitas MENCUKUPI untuk target termasuk alokasi reject.';
+    statusEl.innerHTML = '✅ Kapasitas MENCUKUPI target termasuk alokasi reject.';
    } else {
     statusEl.className = 'status warn';
     statusEl.innerHTML = '⚠️ KURANG! Bottleneck: '+((bottleneckIndex !== -1 && data[bottleneckIndex]?.process) ? data[bottleneckIndex].process : '-')+'.';
@@ -615,7 +998,7 @@ function calc(){
  let simContainer = $('simList');
  simContainer.innerHTML = '';
  if(data.length === 0 || (data.length === 1 && !data[0].process && data[0].ops === 0)){
-   simContainer.innerHTML = `<div style="text-align:center;color:var(--gray);font-size:12px;padding:10px;">Belum ada data proses.</div>`;
+   simContainer.innerHTML = `<div style="text-align:center;color:var(--gray);font-size:12px;padding:8px;">Belum ada data proses.</div>`;
    return;
  }
 
@@ -637,8 +1020,276 @@ function calc(){
    simContainer.appendChild(simCard);
  });
 }
-document.querySelectorAll('input').forEach(x=>x.addEventListener('input',calc));
+
+// --- MENU 3: SIMULASI JADWAL PENGIRIMAN SCRIPT ---
+let deliveryWeeks = [
+  { batchName: "Kirim 1", date: "", target: 0, days: 5, otHours: 0 }
+];
+
+function syncFromTab2() {
+  const lineCapText = $('lineCap').textContent;
+  const lineCapVal = num(lineCapText.replace(/[^\d.-]/g, ''));
+  const hoursVal = num($('hours').value) || 7.5;
+  const prodName = $('product').value;
+  
+  if (lineCapVal > 0) {
+    const target75 = Math.round((lineCapVal / hoursVal) * 7.5);
+    $('delivTarget75').value = target75;
+    if (prodName) $('delivProduct').value = prodName;
+    calcDelivery();
+    alert(`✅ Data Kapasitas Lini Disinkronkan!\n- Produk: ${prodName || '-'}\n- Target 7,5 Jam: ${fmt(target75)} pcs`);
+  } else {
+    alert("⚠️ Data Tab 2 belum lengkap atau kapasitas masih 0. Lengkapi target dan proses di Tab 2 terlebih dahulu.");
+  }
+}
+
+// MEMBUAT STRUKTUR TABEL KONSOLIDASI (EFISIEN, BEBAS SCROLLBAR DESKTOP)
+function buildDeliveryTable() {
+  const tbody = $('deliveryTableBody');
+  tbody.innerHTML = '';
+
+  deliveryWeeks.forEach((item, index) => {
+    const tr = document.createElement('tr');
+    tr.id = `deliv-row-${index}`;
+    tr.innerHTML = `
+      <!-- KOLOM 1: BATCH & JADWAL CUT-OFF -->
+      <td data-label="Batch & Jadwal">
+        <div class="cell-group">
+          <input style="font-weight:700;" value="${item.batchName}" placeholder="Nama Batch..." oninput="deliveryWeeks[${index}].batchName=this.value">
+          <input type="date" value="${item.date}" onchange="onRowDateChange(${index}, this.value)">
+          <div id="deliv-datetxt-${index}" style="font-size:11px;font-weight:700;color:var(--navy);">${formatIndoDate(item.date)}</div>
+          <div id="deliv-cutoff-${index}"></div>
+        </div>
+      </td>
+
+      <!-- KOLOM 2: TARGET KIRIM -->
+      <td data-label="Target Kirim (pcs)">
+        <div class="cell-group">
+          <input type="number" value="${item.target || ''}" placeholder="0 pcs" oninput="deliveryWeeks[${index}].target=num(this.value);calcDelivery()">
+        </div>
+      </td>
+
+      <!-- KOLOM 3: WAKTU KERJA (HARI & LEMBUR) -->
+      <td data-label="Waktu Kerja">
+        <div class="cell-group">
+          <div class="cell-inline">
+            <span class="cell-label" style="min-width:32px;">Hari:</span>
+            <input type="number" id="deliv-days-${index}" style="font-weight:700;" min="0" max="45" value="${item.days}" oninput="deliveryWeeks[${index}].days=num(this.value);calcDelivery()">
+          </div>
+          <div class="cell-inline">
+            <span class="cell-label" style="min-width:32px;">OT:</span>
+            <input type="number" min="0" step="0.5" value="${item.otHours || ''}" placeholder="0 jam" oninput="deliveryWeeks[${index}].otHours=num(this.value);calcDelivery()">
+          </div>
+        </div>
+      </td>
+
+      <!-- KOLOM 4: OUTPUT PRODUKSI -->
+      <td data-label="Output Produksi">
+        <div class="cell-group">
+          <div id="deliv-out-${index}" style="font-weight:800;font-size:14px;color:var(--navy);">-</div>
+          <div style="font-size:11px;color:var(--gray);">Reguler: <span id="deliv-reg-${index}" style="font-weight:600;">-</span></div>
+          <div style="font-size:11px;color:var(--emerald);">Lembur: <span id="deliv-ot-${index}" style="font-weight:600;">-</span></div>
+        </div>
+      </td>
+
+      <!-- KOLOM 5: STOK AKHIR & STATUS -->
+      <td data-label="Stok Akhir & Status">
+        <div class="cell-group">
+          <div id="deliv-stock-${index}" style="font-weight:800;font-size:14px;">-</div>
+          <div id="deliv-status-${index}">-</div>
+        </div>
+      </td>
+
+      <!-- KOLOM 6: AKSI -->
+      <td data-label="Aksi" style="text-align:center;">
+        <button class="danger" onclick="removeDeliveryWeek(${index})" style="padding:6px 9px;">✕</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  calcDelivery();
+}
+
+function updateDateDisplay(index) {
+  const elDate = $(`deliv-datetxt-${index}`);
+  const elCutoff = $(`deliv-cutoff-${index}`);
+  const targetDate = deliveryWeeks[index].date;
+  
+  if (elDate) {
+    elDate.textContent = formatIndoDate(targetDate);
+  }
+  if (elCutoff) {
+    const cutoffText = getCutoffInfo(targetDate);
+    elCutoff.innerHTML = cutoffText ? `<span class="badge cutoff">⏳ ${cutoffText}</span>` : '';
+  }
+}
+
+// UPDATE REAL-TIME TANPA MERUSAK FOKUS INPUT
+function calcDelivery() {
+  const target75 = num($('delivTarget75').value);
+  const shiftHours = num($('delivShiftHours').value) || 7.5;
+  const shiftCount = num($('delivShiftCount').value) || 1;
+  const lineCount = num($('delivLineCount').value) || 1;
+  const eff = (num($('delivEff').value) || 90) / 100;
+  let currentStock = num($('delivInitialStock').value);
+
+  const effectiveHourlyRatePerLine = (target75 / 7.5) * eff;
+  const effectiveHourlyRateTotal = effectiveHourlyRatePerLine * lineCount;
+  const dailyOutputTotal = Math.round(shiftCount * lineCount * (shiftHours / 7.5) * target75 * eff);
+
+  $('delivDailyCapacity').value = (dailyOutputTotal > 0) ? fmt(dailyOutputTotal) + ' pcs/hari' : '-';
+
+  let totalTarget = 0;
+  let totalOutput = 0;
+  let totalOTHours = 0;
+  let hasDeficit = false;
+
+  deliveryWeeks.forEach((item, index) => {
+    const regularProd = Math.round(item.days * dailyOutputTotal);
+    const otProd = Math.round(item.otHours * effectiveHourlyRateTotal);
+    const weekOutput = regularProd + otProd;
+    const availableStock = currentStock + weekOutput;
+    const endingStock = availableStock - item.target;
+
+    totalTarget += item.target;
+    totalOutput += weekOutput;
+    totalOTHours += item.otHours;
+
+    let statusHtml = '-';
+    if (item.target > 0 || weekOutput > 0) {
+      if (endingStock >= 0) {
+        statusHtml = `<span class="badge ok">✅ Aman (+${fmt(endingStock)})</span>`;
+      } else {
+        hasDeficit = true;
+        const deficitQty = Math.abs(endingStock);
+        const neededOT = effectiveHourlyRateTotal > 0 ? (deficitQty / effectiveHourlyRateTotal).toFixed(1) : '-';
+        statusHtml = `<span class="badge warn">⚠️ Defisit ${fmt(deficitQty)} (~${neededOT}j OT)</span>`;
+      }
+    }
+
+    const elReg = $(`deliv-reg-${index}`);
+    const elOt = $(`deliv-ot-${index}`);
+    const elOut = $(`deliv-out-${index}`);
+    const elStock = $(`deliv-stock-${index}`);
+    const elStatus = $(`deliv-status-${index}`);
+
+    if (elReg) elReg.textContent = regularProd > 0 ? fmt(regularProd) + ' pcs' : '-';
+    if (elOt) elOt.textContent = otProd > 0 ? '+' + fmt(otProd) + ' pcs' : '-';
+    if (elOut) elOut.textContent = weekOutput > 0 ? fmt(weekOutput) + ' pcs' : '-';
+    if (elStock) {
+      elStock.textContent = (item.target > 0 || weekOutput > 0) ? fmt(endingStock) + ' pcs' : '-';
+      elStock.style.color = endingStock >= 0 ? 'var(--navy)' : '#ef4444';
+    }
+    if (elStatus) elStatus.innerHTML = statusHtml;
+
+    currentStock = endingStock;
+  });
+
+  $('sumDelivTarget').textContent = totalTarget > 0 ? fmt(totalTarget) + ' pcs' : '-';
+  $('sumDelivOutput').textContent = totalOutput > 0 ? fmt(totalOutput) + ' pcs' : '-';
+  $('sumDelivStock').textContent = (totalTarget > 0 || totalOutput > 0) ? fmt(currentStock) + ' pcs' : '-';
+  $('sumDelivStock').style.color = currentStock >= 0 ? 'var(--text)' : '#ef4444';
+  $('sumDelivOT').textContent = totalOTHours > 0 ? fmt2(totalOTHours) + ' Jam' : '0 Jam';
+
+  const statusBox = $('delivStatus');
+  if (totalTarget > 0) {
+    if (!hasDeficit && currentStock >= 0) {
+      statusBox.className = 'status ok';
+      statusBox.innerHTML = `✅ Kapasitas produksi MENCUKUPI seluruh target delivery. Buffer stok akhir aman (${fmt(currentStock)} pcs).`;
+    } else {
+      statusBox.className = 'status warn';
+      statusBox.innerHTML = `⚠️ Terjadi DEFISIT kapasitas pengiriman! Tambahkan jam lembur (OT) atau operasikan line tambahan pada jadwal terkait.`;
+    }
+  } else {
+    statusBox.className = 'status';
+    statusBox.innerHTML = 'ℹ️ Masukkan target delivery untuk melihat simulasi pemenuhan.';
+  }
+}
+
+function addDeliveryWeek() {
+  const nextNum = deliveryWeeks.length + 1;
+  let nextDate = "";
+  if (deliveryWeeks.length > 0) {
+    const lastDateStr = deliveryWeeks[deliveryWeeks.length - 1].date;
+    if (lastDateStr) {
+      const parts = lastDateStr.split('-');
+      const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+      d.setDate(d.getDate() + 7);
+      nextDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+  }
+
+  deliveryWeeks.push({ batchName: `Kirim ${nextNum}`, date: nextDate, target: 0, days: 5, otHours: 0 });
+  buildDeliveryTable();
+  recalculateAllWorkDays();
+  calcDelivery();
+}
+
+function removeDeliveryWeek(index) {
+  if (deliveryWeeks.length > 1) {
+    deliveryWeeks.splice(index, 1);
+    buildDeliveryTable();
+    recalculateAllWorkDays();
+    calcDelivery();
+  } else {
+    alert("Minimal harus ada 1 periode pengiriman.");
+  }
+}
+
+function resetDeliverySchedule() {
+  if (confirm("Kosongkan seluruh data tabel simulasi pengiriman?")) {
+    $('delivProduct').value = "";
+    $('delivJobOrder').value = "";
+    $('delivTarget75').value = "";
+    $('delivShiftHours').value = "7.5";
+    $('delivShiftCount').value = "1";
+    $('delivLineCount').value = "1";
+    $('delivEff').value = "90";
+    $('delivInitialStock').value = "0";
+    $('delivTotalOrder').value = "";
+    initCurrentDate();
+    deliveryWeeks = [
+      { batchName: "Kirim 1", date: "", target: 0, days: 5, otHours: 0 }
+    ];
+    buildDeliveryTable();
+  }
+}
+
+function downloadDeliveryImage() {
+  const captureElement = document.getElementById('captureAreaDelivery');
+  alert("📸 Sedang memproses gambar jadwal pengiriman, mohon tunggu sebentar...");
+  html2canvas(captureElement, { 
+    scale: 2, 
+    useCORS: true,
+    scrollX: 0,
+    scrollY: 0
+  }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = `Jadwal_Pengiriman_${($('delivProduct').value || 'Produk').replace(/\s+/g, '_')}.png`;
+    link.href = canvas.toDataURL('image/png', 1.0);
+    link.click();
+  }).catch(err => {
+    alert("❌ Gagal membuat gambar jadwal pengiriman.");
+  });
+}
+
+function initCurrentDate() {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const todayStr = `${yyyy}-${mm}-${dd}`;
+  $('delivTodayDate').value = todayStr;
+  updateTodayDateDisplay();
+}
+
+// Inisialisasi awal saat halaman dibuka
+document.querySelectorAll('#menuView2 input').forEach(x => x.addEventListener('input', calc));
 render();
+initCurrentDate();
+buildDeliveryTable();
+calcSPA();
 </script>
 </body>
 </html>
